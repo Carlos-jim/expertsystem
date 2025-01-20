@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ArrowRight } from "lucide-react";
@@ -15,7 +15,15 @@ export default function ExpertSystem() {
   const imageRef = useRef(null);
 
   useEffect(() => {
-    // GSAP animations
+    // Refrescar la página automáticamente al entrar
+    const navigationEntries = window.performance
+      .getEntriesByType("navigation")
+      .filter((entry) => entry instanceof PerformanceNavigationTiming);
+
+    if (!navigationEntries.some((nav) => nav.type === "reload")) {
+      window.location.reload();
+    }
+
     const tl = gsap.timeline();
     tl.from(titleRef.current, {
       y: -50,
