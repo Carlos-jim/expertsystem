@@ -1,8 +1,6 @@
 'use client'
-
 import { useState, useRef, useEffect } from "react";
 import { gsap } from "gsap";
-import Navbar from "@/components/menu/navbar";
 import SendMessage from "@/components/chat/input/send";
 
 interface Message {
@@ -29,7 +27,6 @@ export default function ChatInterface() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Anima todos los mensajes cuando se cargan
     if (containerRef.current) {
       gsap.fromTo(
         containerRef.current.children,
@@ -50,9 +47,6 @@ export default function ChatInterface() {
 
   return (
     <div className="flex flex-col h-screen bg-white">
-      <Navbar></Navbar>
-
-      {/* Chat Area */}
       <main className="flex-1 overflow-y-auto p-6 space-y-4" ref={containerRef}>
         {messages.map((message, index) => (
           <div
@@ -78,7 +72,6 @@ export default function ChatInterface() {
         ))}
       </main>
 
-      {/* Input Area */}
       <SendMessage></SendMessage>
     </div>
   );
