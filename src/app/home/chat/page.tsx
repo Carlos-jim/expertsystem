@@ -12,7 +12,7 @@ export default function ChatInterface() {
   const [messages] = useState<Message[]>([
     {
       sender: 'YO',
-      text: 'Lorema maka lasla la sw ulsa pa urtira. Lorema maka lasla la sw ulsa pa urtira. Lorema maka lasla la sw ulsa pa urtira'
+      text: 'Si'
     },
     {
       sender: 'BOT',
@@ -20,7 +20,7 @@ export default function ChatInterface() {
     },
     {
       sender: 'YO',
-      text: 'Lorema maka lasla la sw ulsa pa urtira'
+      text: 'No'
     }
   ]);
 
@@ -46,33 +46,32 @@ export default function ChatInterface() {
   }, [messages]);
 
   return (
-    <div className="flex flex-col h-screen bg-white">
+    <div className="flex flex-col h-screen bg-gradient-to-b from-blue-50 to-white">
       <main className="flex-1 overflow-y-auto p-6 space-y-4" ref={containerRef}>
         {messages.map((message, index) => (
           <div
             key={index}
-            className={`flex ${
-              message.sender === 'YO' ? 'justify-end' : 'justify-start'
-            }`}
+            className={`flex ${message.sender === 'YO' ? 'justify-end' : 'justify-start'}`}
           >
             <div
-              className={`max-w-[80%] md:max-w-[60%] rounded-lg p-4 ${
-                message.sender === 'YO' ? 'bg-blue-100' : 'bg-gray-100'
+              className={`max-w-[80%] md:max-w-[60%] rounded-lg p-4 shadow-md transition-all ${
+                message.sender === 'YO' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'
               }`}
             >
               {message.sender === 'BOT' && (
-                <div className="font-semibold text-sm mb-1">BOT</div>
+                <div className="font-semibold text-sm mb-2">BOT</div>
               )}
               {message.sender === 'YO' && (
-                <div className="font-semibold text-sm mb-1 text-right">YO</div>
+                <div className="font-semibold text-sm mb-2 text-right">YO</div>
               )}
-              <p className="text-gray-800">{message.text}</p>
+              <p className="text-sm">{message.text}</p>
             </div>
           </div>
         ))}
+        <div className="pt-4">
+          <SendMessage />
+        </div>
       </main>
-
-      <SendMessage></SendMessage>
     </div>
   );
 }
