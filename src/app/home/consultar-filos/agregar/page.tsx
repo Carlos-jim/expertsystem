@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { motion } from "framer-motion"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -26,193 +27,76 @@ export default function FormularioCaracteristicas() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     console.log(formData)
-    // Aquí puedes agregar la lógica para enviar los datos del formulario
   }
 
   return (
-    <div className="pt-8">
-    <Card className="w-full max-w-4xl mx-auto">
-      <CardHeader>
-        <CardTitle>Formulario del Organismo</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="nivelOrganizacion">Nivel de organización</Label>
-            <Select onValueChange={handleSelectChange("nivelOrganizacion")}>
-              <SelectTrigger id="nivelOrganizacion">
-                <SelectValue placeholder="Selecciona el nivel de organización" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Si">Si</SelectItem>
-                <SelectItem value="No">No</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="tipoSimetria">Tipo de simetría</Label>
-            <Select onValueChange={handleSelectChange("tipoSimetria")}>
-              <SelectTrigger id="tipoSimetria">
-                <SelectValue placeholder="Selecciona el tipo de simetría" />
-              </SelectTrigger>
-              <SelectContent>
-              <SelectItem value="Si">Si</SelectItem>
-              <SelectItem value="No">No</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="capasGerminales">Capas germinales</Label>
-            <Select onValueChange={handleSelectChange("capasGerminales")}>
-              <SelectTrigger id="capasGerminales">
-                <SelectValue placeholder="Selecciona las capas germinales" />
-              </SelectTrigger>
-              <SelectContent>
-              <SelectItem value="Si">Si</SelectItem>
-              <SelectItem value="No">No</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="segmentacion">Segmentación</Label>
-            <Select onValueChange={handleSelectChange("segmentacion")}>
-              <SelectTrigger id="segmentacion">
-                <SelectValue placeholder="¿Es segmentado?" />
-              </SelectTrigger>
-              <SelectContent>
-              <SelectItem value="Si">Si</SelectItem>
-              <SelectItem value="No">No</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="cavidadCorporal">Cavidad corporal</Label>
-            <Select onValueChange={handleSelectChange("cavidadCorporal")}>
-              <SelectTrigger id="cavidadCorporal">
-                <SelectValue placeholder="¿Tiene cavidad corporal?" />
-              </SelectTrigger>
-              <SelectContent>
-              <SelectItem value="Si">Si</SelectItem>
-              <SelectItem value="No">No</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="sistemaDigestivo">Sistema digestivo</Label>
-            <Select onValueChange={handleSelectChange("sistemaDigestivo")}>
-              <SelectTrigger id="sistemaDigestivo">
-                <SelectValue placeholder="¿Tiene sistema digestivo?" />
-              </SelectTrigger>
-              <SelectContent>
-              <SelectItem value="Si">Si</SelectItem>
-              <SelectItem value="No">No</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="sistemaNervioso">Sistema nervioso</Label>
-            <Select onValueChange={handleSelectChange("sistemaNervioso")}>
-              <SelectTrigger id="sistemaNervioso">
-                <SelectValue placeholder="¿Tiene sistema nervioso?" />
-              </SelectTrigger>
-              <SelectContent>
-              <SelectItem value="Si">Si</SelectItem>
-              <SelectItem value="No">No</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="sistemaCorporal">Sistema corporal</Label>
-            <Select onValueChange={handleSelectChange("sistemaCorporal")}>
-              <SelectTrigger id="sistemaCorporal">
-                <SelectValue placeholder="¿Tiene sistema corporal?" />
-              </SelectTrigger>
-              <SelectContent>
-              <SelectItem value="Si">Si</SelectItem>
-              <SelectItem value="No">No</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="reproduccionSexual">Reproducción sexual</Label>
-            <Select onValueChange={handleSelectChange("reproduccionSexual")}>
-              <SelectTrigger id="reproduccionSexual">
-                <SelectValue placeholder="¿Tiene reproducción sexual?" />
-              </SelectTrigger>
-              <SelectContent>
-              <SelectItem value="Si">Si</SelectItem>
-              <SelectItem value="No">No</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="reproduccionAsexual">Reproducción asexual</Label>
-            <Select onValueChange={handleSelectChange("reproduccionAsexual")}>
-              <SelectTrigger id="reproduccionAsexual">
-                <SelectValue placeholder="¿Tiene reproducción asexual?" />
-              </SelectTrigger>
-              <SelectContent>
-              <SelectItem value="Si">Si</SelectItem>
-              <SelectItem value="No">No</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="habitatTerrestre">Hábitat Terrestre</Label>
-            <Select onValueChange={handleSelectChange("reproduccionSexual")}>
-              <SelectTrigger id="reproduccionSexual">
-                <SelectValue placeholder="¿Hábitat terrestre?" />
-              </SelectTrigger>
-              <SelectContent>
-              <SelectItem value="Si">Si</SelectItem>
-              <SelectItem value="No">No</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="reproduccionSexual">Hábitat marino</Label>
-            <Select onValueChange={handleSelectChange("reproduccionSexual")}>
-              <SelectTrigger id="reproduccionSexual">
-                <SelectValue placeholder="¿Hábitat marino?" />
-              </SelectTrigger>
-              <SelectContent>
-              <SelectItem value="Si">Si</SelectItem>
-              <SelectItem value="No">No</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="reproduccionSexual">Parasito</Label>
-            <Select onValueChange={handleSelectChange("reproduccionSexual")}>
-              <SelectTrigger id="reproduccionSexual">
-                <SelectValue placeholder="¿Es un parasito?" />
-              </SelectTrigger>
-              <SelectContent>
-              <SelectItem value="Si">Si</SelectItem>
-              <SelectItem value="No">No</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <Button type="submit" className="md:col-span-2 mt-4">
-            Enviar
-          </Button>
-        </form>
-      </CardContent>
-    </Card>
-    </div>
+    <motion.div
+      className="pt-8"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <motion.div
+        className="w-full max-w-4xl mx-auto"
+        initial={{ scale: 0.95 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: 0.4 }}
+      >
+        <Card>
+          <CardHeader>
+            <CardTitle>Formulario del Organismo</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <form
+              onSubmit={handleSubmit}
+              className="grid grid-cols-1 md:grid-cols-2 gap-4"
+            >
+              {[
+                { id: "nivelOrganizacion", label: "Nivel de organización" },
+                { id: "tipoSimetria", label: "Tipo de simetría" },
+                { id: "capasGerminales", label: "Capas germinales" },
+                { id: "segmentacion", label: "Segmentación" },
+                { id: "cavidadCorporal", label: "Cavidad corporal" },
+                { id: "sistemaDigestivo", label: "Sistema digestivo" },
+                { id: "sistemaNervioso", label: "Sistema nervioso" },
+                { id: "sistemaCorporal", label: "Sistema corporal" },
+                { id: "reproduccionSexual", label: "Reproducción sexual" },
+                { id: "reproduccionAsexual", label: "Reproducción asexual" },
+                { id: "habitatTerrestre", label: "Hábitat terrestre" },
+                { id: "habitatMarino", label: "Hábitat marino" },
+                { id: "parasito", label: "Parasito" },
+              ].map(({ id, label }, index) => (
+                <motion.div
+                  key={id}
+                  className="space-y-2"
+                  initial={{ x: -20, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                >
+                  <Label htmlFor={id}>{label}</Label>
+                  <Select onValueChange={handleSelectChange(id)}>
+                    <SelectTrigger id={id}>
+                      <SelectValue placeholder={`Selecciona ${label.toLowerCase()}`} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Si">Si</SelectItem>
+                      <SelectItem value="No">No</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </motion.div>
+              ))}
+              <motion.div
+                className="md:col-span-2 mt-4 flex justify-end"
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.4, delay: 0.7 }}
+              >
+                <Button type="submit">Enviar</Button>
+              </motion.div>
+            </form>
+          </CardContent>
+        </Card>
+      </motion.div>
+    </motion.div>
   )
 }
-
