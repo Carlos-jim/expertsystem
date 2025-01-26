@@ -9,7 +9,7 @@ interface Message {
 }
 
 export default function ChatInterface() {
-  const [messages] = useState<Message[]>([
+  const [messages, setMessages] = useState<Message[]>([
     {
       sender: 'YO',
       text: 'Si'
@@ -45,6 +45,14 @@ export default function ChatInterface() {
     }
   }, [messages]);
 
+  const handleSendMessage = (newMessage: string) => {
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { sender: 'YO', text: newMessage }, // Agregar el mensaje del usuario
+      { sender: 'BOT', text: 'Respondiendo al mensaje: ' + newMessage }, // Respuesta simulada del bot
+    ]);
+  };
+
   return (
     <div className="flex flex-col h-screen bg-gradient-to-b from-blue-50 to-white">
       <main className="flex-1 overflow-y-auto p-6 space-y-4" ref={containerRef}>
@@ -54,22 +62,16 @@ export default function ChatInterface() {
             className={`flex ${message.sender === 'YO' ? 'justify-end' : 'justify-start'}`}
           >
             <div
-              className={`max-w-[80%] md:max-w-[60%] rounded-lg p-4 shadow-md transition-all ${
-                message.sender === 'YO' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'
-              }`}
+              className={`max-w-[80%] md:max-w-[60%] rounded-lg p-4 shadow-md transition-all ${message.sender === 'YO' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'}`}
             >
-              {message.sender === 'BOT' && (
-                <div className="font-semibold text-sm mb-2">BOT</div>
-              )}
-              {message.sender === 'YO' && (
-                <div className="font-semibold text-sm mb-2 text-right">YO</div>
-              )}
+              {message.sender === 'BOT' && <div className="font-semibold text-sm mb-2">BOT</div>}
+              {message.sender === 'YO' && <div className="font-semibold text-sm mb-2 text-right">YO</div>}
               <p className="text-sm">{message.text}</p>
             </div>
           </div>
         ))}
         <div className="pt-4">
-          <SendMessage />
+          <SendMessage onSendMessage={handleSendMessage} />
         </div>
       </main>
     </div>
