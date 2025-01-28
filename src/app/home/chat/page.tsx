@@ -1,6 +1,5 @@
 'use client'
-import { useState, useRef, useEffect } from "react";
-import { gsap } from "gsap";
+import { useState, useRef,  } from "react";
 import SendMessage from "@/components/chat/input/send";
 
 interface Message {
@@ -26,24 +25,7 @@ export default function ChatInterface() {
 
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (containerRef.current) {
-      gsap.fromTo(
-        containerRef.current.children,
-        {
-          y: 20,
-          opacity: 0,
-        },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.5,
-          ease: "power3.out",
-          stagger: 0.2, // Intervalo entre animaciones
-        }
-      );
-    }
-  }, [messages]);
+ 
 
   const handleSendMessage = (newMessage: string) => {
     setMessages((prevMessages) => [

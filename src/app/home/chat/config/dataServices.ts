@@ -6,20 +6,18 @@ export const sendResponseToApi = async (response: string, onSendMessage: (messag
 
   try {
     const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL_API}?user=${response}`;
+    console.log("API URL:", apiUrl);
     const res = await fetch(apiUrl, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      method: "GET"
     });
 
     if (!res.ok) {
       throw new Error("Failed to send response");
     }
-
-    const data = await res.json();
+    const data = await res.text();
     console.log("Response Data:", data);
   } catch (err) {
+
     ErrorToast();
     setError("There was an error sending the request");
     console.error(err);
