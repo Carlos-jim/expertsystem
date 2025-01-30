@@ -3,6 +3,7 @@ import { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { motion, AnimatePresence } from "framer-motion" // Importar framer-motion
 
 type ListaConFiltrosProps = {
   initialItems: string[]
@@ -56,21 +57,42 @@ export default function ListaConFiltros({ initialItems }: ListaConFiltrosProps) 
         </Select>
       </div>
 
-      <ul className="space-y-2">
-        {currentItems.map((item, index) => (
-          <li key={index} className="bg-gray-100 p-2 rounded">
-            {item}
-          </li>
-        ))}
-      </ul>
+      {/* Lista de elementos con animación */}
+      <motion.ul className="space-y-2">
+        <AnimatePresence>
+          {currentItems.map((item, index) => (
+            <motion.li
+              key={index}
+              initial={{ opacity: 0, y: -10 }} // Estado inicial
+              animate={{ opacity: 1, y: 0 }} // Estado animado
+              exit={{ opacity: 0, y: -10 }} // Estado al salir
+              transition={{ duration: 0.3, delay: index * 0.1 }} // Transición
+              className="bg-gray-100 p-2 rounded"
+            >
+              {item}
+            </motion.li>
+          ))}
+        </AnimatePresence>
+      </motion.ul>
 
-      <div className="flex justify-center space-x-2">
+      {/* Botones de paginación con animación */}
+      <motion.div className="flex justify-center space-x-2">
         {Array.from({ length: Math.ceil(filteredAndSortedItems.length / itemsPerPage) }, (_, i) => (
-          <Button key={i} onClick={() => paginate(i + 1)} variant={currentPage === i + 1 ? "default" : "outline"}>
-            {i + 1}
-          </Button>
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, scale: 0.8 }} // Estado inicial
+            animate={{ opacity: 1, scale: 1 }} // Estado animado
+            transition={{ duration: 0.3, delay: i * 0.1 }} // Transición
+          >
+            <Button
+              onClick={() => paginate(i + 1)}
+              variant={currentPage === i + 1 ? "default" : "outline"}
+            >
+              {i + 1}
+            </Button>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
   )
 }

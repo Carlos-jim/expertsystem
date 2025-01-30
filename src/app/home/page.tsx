@@ -87,6 +87,7 @@ export default function ExpertSystem() {
                 alt="Robot"
                 height={450}
                 width={450}
+                priority
                 className="object-cover"
               />
             </motion.div>
