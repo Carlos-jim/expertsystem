@@ -28,12 +28,11 @@ export default function ListaConFiltros({ initialItems }: ListaConFiltrosProps) 
       }
     })
 
-  // Calcular items para la página actual
+
   const indexOfLastItem = currentPage * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
   const currentItems = filteredAndSortedItems.slice(indexOfFirstItem, indexOfLastItem)
 
-  // Cambiar de página
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
 
   return (
@@ -57,7 +56,6 @@ export default function ListaConFiltros({ initialItems }: ListaConFiltrosProps) 
         </Select>
       </div>
 
-      {/* Lista de elementos con animación */}
       <motion.ul className="space-y-2">
         <AnimatePresence>
           {currentItems.map((item, index) => (
@@ -75,14 +73,13 @@ export default function ListaConFiltros({ initialItems }: ListaConFiltrosProps) 
         </AnimatePresence>
       </motion.ul>
 
-      {/* Botones de paginación con animación */}
       <motion.div className="flex justify-center space-x-2">
         {Array.from({ length: Math.ceil(filteredAndSortedItems.length / itemsPerPage) }, (_, i) => (
           <motion.div
             key={i}
-            initial={{ opacity: 0, scale: 0.8 }} // Estado inicial
-            animate={{ opacity: 1, scale: 1 }} // Estado animado
-            transition={{ duration: 0.3, delay: i * 0.1 }} // Transición
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }} 
+            transition={{ duration: 0.3, delay: i * 0.1 }} 
           >
             <Button
               onClick={() => paginate(i + 1)}

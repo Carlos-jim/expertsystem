@@ -19,17 +19,7 @@ export default function SendMessage({ onSendMessage }: SendMessageProps) {
 
   return (
     <div className="p-4 border-t">
-      <div className="max-w-4xl mx-auto flex gap-2">
-        <div className="relative flex-1">
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="pl-10 w-full bg-gray-100 border-0 text-center py-3 flex justify-center items-center"
-          >
-            <p className="text-gray-600">¡Responde las preguntas!</p>
-          </motion.div>
-        </div>
+      <div className="max-w-4xl justify-center mx-auto flex gap-2">
         <div className="flex gap-2">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
