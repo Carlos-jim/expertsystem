@@ -1,10 +1,9 @@
 "use client"
-import { Suspense } from "react";
-import { filos } from "@/data/filos";
-import ListaConFiltros from "@/components/list/List";
-import { Button } from "@/components/ui/button";
-import { CirclePlus } from "lucide-react";
-import Link from "next/link";
+import { Suspense } from "react"
+import ListaConFiltros from "@/components/list/List"
+import { Button } from "@/components/ui/button"
+import { CirclePlus } from "lucide-react"
+import Link from "next/link"
 import { motion } from "framer-motion"
 
 export default function ConsultarFilos() {
@@ -33,8 +32,8 @@ export default function ConsultarFilos() {
         </motion.div>
       </div>
       <Suspense fallback={<div>Cargando...</div>}>
-        <ListaConFiltros initialItems={filos} />
+        <ListaConFiltros />
       </Suspense>
     </main>
-  );
+  )
 }

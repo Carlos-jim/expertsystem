@@ -1,39 +1,58 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { motion, AnimatePresence } from "framer-motion" // Importar framer-motion
+import { motion, AnimatePresence } from "framer-motion"
 
-type ListaConFiltrosProps = {
-  initialItems: string[]
-}
-
-export default function ListaConFiltros({ initialItems }: ListaConFiltrosProps) {
-  const [items] = useState(initialItems)
+export default function ListaConFiltros() {
+  const [items, setItems] = useState<{ Phylum: string, descripcion: string }[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [searchTerm, setSearchTerm] = useState("")
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc")
+  const [expandedItem, setExpandedItem] = useState<string | null>(null)
 
   const itemsPerPage = 5
 
-  // Filtrar y ordenar items
-  const filteredAndSortedItems = items
-    .filter((item) => item.toLowerCase().includes(searchTerm.toLowerCase()))
-    .sort((a, b) => {
-      if (sortOrder === "asc") {
-        return a.localeCompare(b)
-      } else {
-        return b.localeCompare(a)
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL_API}list_filos`
+        const response = await fetch(apiUrl, { method: "GET" })
+        if (!response.ok) {
+          throw new Error("Error al obtener los datos")
+        }
+        const data = await response.json()
+        const phylumList = Object.values(data).map((item: any) => ({ Phylum: item.Phylum, descripcion: item.descripcion }))
+        setItems(phylumList)
+      } catch (error) {
+        setError(error.message)
+      } finally {
+        setLoading(false)
       }
-    })
+    }
 
+    fetchData()
+  }, [])
+
+  const filteredAndSortedItems = items
+    .filter((item) => item.Phylum.toLowerCase().includes(searchTerm.toLowerCase()))
+    .sort((a, b) => (sortOrder === "asc" ? a.Phylum.localeCompare(b.Phylum) : b.Phylum.localeCompare(a.Phylum)))
 
   const indexOfLastItem = currentPage * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
   const currentItems = filteredAndSortedItems.slice(indexOfFirstItem, indexOfLastItem)
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
+
+  const toggleDescription = (phylum: string) => {
+    setExpandedItem(expandedItem === phylum ? null : phylum)
+  }
+
+  if (loading) return <div>Cargando...</div>
+  if (error) return <div>Error: {error}</div>
 
   return (
     <div className="space-y-4">
@@ -61,13 +80,25 @@ export default function ListaConFiltros({ initialItems }: ListaConFiltrosProps) 
           {currentItems.map((item, index) => (
             <motion.li
               key={index}
-              initial={{ opacity: 0, y: -10 }} // Estado inicial
-              animate={{ opacity: 1, y: 0 }} // Estado animado
-              exit={{ opacity: 0, y: -10 }} // Estado al salir
-              transition={{ duration: 0.3, delay: index * 0.1 }} // Transición
-              className="bg-gray-100 p-2 rounded"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3, delay: index * 0.1 }}
+              className="bg-gray-100 p-2 rounded cursor-pointer"
+              onClick={() => toggleDescription(item.Phylum)}
             >
-              {item}
+              {item.Phylum}
+              {expandedItem === item.Phylum && (
+                <motion.p
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="mt-2 text-gray-700"
+                >
+                  {item.descripcion}
+                </motion.p>
+              )}
             </motion.li>
           ))}
         </AnimatePresence>
@@ -78,8 +109,8 @@ export default function ListaConFiltros({ initialItems }: ListaConFiltrosProps) 
           <motion.div
             key={i}
             initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }} 
-            transition={{ duration: 0.3, delay: i * 0.1 }} 
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3, delay: i * 0.1 }}
           >
             <Button
               onClick={() => paginate(i + 1)}
