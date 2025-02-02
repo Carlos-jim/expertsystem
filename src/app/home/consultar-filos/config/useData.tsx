@@ -1,55 +1,45 @@
-// src/hooks/useItems.ts
 import { useState, useEffect } from "react";
-import { fetchItems } from "./dataServices";
 
 interface FiloItem {
   Phylum: string;
   descripcion: string;
 }
 
-export const useItems = () => {
+export const useFetchFilos = () => {
   const [items, setItems] = useState<FiloItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-
-  const itemsPerPage = 5;
 
   useEffect(() => {
-    const loadItems = async () => {
+    const fetchData = async () => {
       try {
-        const data = await fetchItems();
-        setItems(data);
+        const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL_API}list_filos`;
+        const response = await fetch(apiUrl, { method: "GET" });
+        
+        if (!response.ok) {
+          throw new Error("Error al obtener los datos");
+        }
+
+        const data = await response.json();
+        const phylumList = Object.values(data as { [key: string]: FiloItem }).map((item) => ({
+          Phylum: item.Phylum,
+          descripcion: item.descripcion,
+        }));
+
+        setItems(phylumList);
       } catch (error) {
-        setError("Error al obtener los datos");
-        throw error
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("Error desconocido");
+        }
       } finally {
         setLoading(false);
       }
     };
-    loadItems();
+
+    fetchData();
   }, []);
 
-  const filteredAndSortedItems = items
-    .filter((item) => item.Phylum.toLowerCase().includes(searchTerm.toLowerCase()))
-    .sort((a, b) => (sortOrder === "asc" ? a.Phylum.localeCompare(b.Phylum) : b.Phylum.localeCompare(a.Phylum)));
-
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredAndSortedItems.slice(indexOfFirstItem, indexOfLastItem);
-
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
-
-  return {
-    loading,
-    error,
-    currentItems,
-    currentPage,
-    paginate,
-    setSearchTerm,
-    setSortOrder,
-    setCurrentPage,
-  };
+  return { items, loading, error };
 };

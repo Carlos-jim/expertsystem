@@ -1,54 +1,22 @@
 "use client"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { motion, AnimatePresence } from "framer-motion"
 import SpinnerWithText from "@/components/loading"
+import { Trash2 } from "lucide-react"
+import { useFetchFilos } from "@/app/home/consultar-filos/config/useData"
+
 
 export default function ListaConFiltros() {
-  const [items, setItems] = useState<{ Phylum: string, descripcion: string }[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const { items, loading, error} = useFetchFilos()
   const [currentPage, setCurrentPage] = useState(1)
   const [searchTerm, setSearchTerm] = useState("")
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc")
   const [expandedItem, setExpandedItem] = useState<string | null>(null)
 
   const itemsPerPage = 5
-
-  interface FiloItem {
-    Phylum: string;
-    descripcion: string;
-  }
-  
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL_API}list_filos`;
-        const response = await fetch(apiUrl, { method: "GET" });
-        if (!response.ok) {
-          throw new Error("Error al obtener los datos");
-        }
-        const data = await response.json();
-        const phylumList = Object.values(data as { [key: string]: FiloItem }).map((item) => ({
-          Phylum: item.Phylum,
-          descripcion: item.descripcion,
-        }));
-        setItems(phylumList);
-      } catch (error) {
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError("Error desconocido");
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-  
-    fetchData();
-  }, []);
 
   const filteredAndSortedItems = items
     .filter((item) => item.Phylum.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -64,7 +32,11 @@ export default function ListaConFiltros() {
     setExpandedItem(expandedItem === phylum ? null : phylum)
   }
 
-  if (loading) return <SpinnerWithText></SpinnerWithText>
+  /*const handleDelete = (phylum: string) => {
+    deleteItem(phylum)
+  }*/
+
+  if (loading) return <SpinnerWithText />
   if (error) return <div>Error: {error}</div>
 
   return (
@@ -97,21 +69,30 @@ export default function ListaConFiltros() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3, delay: index * 0.1 }}
-              className="bg-gray-100 p-2 rounded cursor-pointer"
+              className="bg-gray-100 p-2 rounded cursor-pointer flex justify-between items-center"
               onClick={() => toggleDescription(item.Phylum)}
             >
-              {item.Phylum}
-              {expandedItem === item.Phylum && (
-                <motion.p
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="mt-2 text-gray-700"
-                >
-                  {item.descripcion}
-                </motion.p>
-              )}
+              <div>
+                {item.Phylum}
+                {expandedItem === item.Phylum && (
+                  <motion.p
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="mt-2 text-gray-700"
+                  >
+                    {item.descripcion}
+                  </motion.p>
+                )}
+              </div>
+              <Trash2
+                className="text-red-500 hover:text-red-700 cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  //handleDelete(item.Phylum)
+                }}
+              />
             </motion.li>
           ))}
         </AnimatePresence>
