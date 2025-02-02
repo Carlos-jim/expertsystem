@@ -5,7 +5,7 @@ export const sendResponseToApi = async (response: string, onSendMessage: (messag
   onSendMessage(response);
 
   try {
-    const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL_API}?user=${response}`;
+    const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL_API}`;
     console.log("API URL:", apiUrl);
     const res = await fetch(apiUrl, {
       method: "GET"
