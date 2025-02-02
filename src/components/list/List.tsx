@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { motion, AnimatePresence } from "framer-motion"
+import SpinnerWithText from "@/components/loading"
 
 export default function ListaConFiltros() {
   const [items, setItems] = useState<{ Phylum: string, descripcion: string }[]>([])
@@ -16,26 +17,38 @@ export default function ListaConFiltros() {
 
   const itemsPerPage = 5
 
+  interface FiloItem {
+    Phylum: string;
+    descripcion: string;
+  }
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL_API}list_filos`
-        const response = await fetch(apiUrl, { method: "GET" })
+        const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL_API}list_filos`;
+        const response = await fetch(apiUrl, { method: "GET" });
         if (!response.ok) {
-          throw new Error("Error al obtener los datos")
+          throw new Error("Error al obtener los datos");
         }
-        const data = await response.json()
-        const phylumList = Object.values(data).map((item: any) => ({ Phylum: item.Phylum, descripcion: item.descripcion }))
-        setItems(phylumList)
+        const data = await response.json();
+        const phylumList = Object.values(data as { [key: string]: FiloItem }).map((item) => ({
+          Phylum: item.Phylum,
+          descripcion: item.descripcion,
+        }));
+        setItems(phylumList);
       } catch (error) {
-        setError(error.message)
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("Error desconocido");
+        }
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
-
-    fetchData()
-  }, [])
+    };
+  
+    fetchData();
+  }, []);
 
   const filteredAndSortedItems = items
     .filter((item) => item.Phylum.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -51,7 +64,7 @@ export default function ListaConFiltros() {
     setExpandedItem(expandedItem === phylum ? null : phylum)
   }
 
-  if (loading) return <div>Cargando...</div>
+  if (loading) return <SpinnerWithText></SpinnerWithText>
   if (error) return <div>Error: {error}</div>
 
   return (

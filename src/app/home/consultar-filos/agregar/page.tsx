@@ -37,18 +37,19 @@ export default function FormularioCaracteristicas() {
     e.preventDefault()
     setLoading(true)
     setMessage("")
-
+  
     const result = await sendFiloData(formData)
     setMessage(result.message)
-    result.success ? SuccessToast() : ErrorToast()
     
     if (result.success) {
+      SuccessToast();
       setFormData({ filo: "", descripcion: "", caracteristicas: Array(23).fill(0) })
+    } else {
+      ErrorToast();
     }
     
     setLoading(false)
   }
-
   return (
     <motion.div className="pt-8" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
       <motion.div className="w-full max-w-4xl mx-auto" initial={{ scale: 0.95 }} animate={{ scale: 1 }} transition={{ duration: 0.4 }}>
