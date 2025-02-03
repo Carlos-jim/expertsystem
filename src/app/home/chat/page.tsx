@@ -21,6 +21,7 @@ export default function ChatInterface() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [respuesta, setRespuesta] = useState<Respuesta | null>(null);
+  const [chatTerminado, setChatTerminado] = useState(false); // Estado para controlar si el chat ha terminado
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Efecto para hacer la primera pregunta al cargar el componente
@@ -48,6 +49,7 @@ export default function ChatInterface() {
           text: `El Phylum es ${respuesta.Phylum}. Descripción: ${respuesta.descripcion}`,
         },
       ]);
+      setChatTerminado(true); // Marcar el chat como terminado
     }
   }, [respuesta]);
 
@@ -86,6 +88,14 @@ export default function ChatInterface() {
     }
   };
 
+  const reiniciarChat = () => {
+    setMessages([]);
+    setCurrentQuestionIndex(0);
+    setUserResponses([]);
+    setRespuesta(null);
+    setChatTerminado(false); // Reiniciar el estado del chat
+  };
+
   return (
     <div className="flex flex-col h-screen bg-gradient-to-b from-blue-50 to-white">
       <main className="flex-1 overflow-y-auto p-6 space-y-4" ref={containerRef}>
@@ -102,7 +112,13 @@ export default function ChatInterface() {
           </div>
         ))}
         <div className="pt-4">
-          <SendMessage onSendMessage={handleSendMessage} loading={loading} error={error} />
+          <SendMessage
+            onSendMessage={handleSendMessage}
+            loading={loading}
+            error={error}
+            chatTerminado={chatTerminado}
+            reiniciarChat={reiniciarChat}
+          />
         </div>
       </main>
     </div>
