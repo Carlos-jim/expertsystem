@@ -1,4 +1,5 @@
 export const sendFiloData = async <T>(formData: T) => {
+  console.log("Enviando datos a la API:", formData);
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL_API}new_filo`, {
         method: "POST",
@@ -21,3 +22,31 @@ export const sendFiloData = async <T>(formData: T) => {
       }
     }
   }
+
+  export const deleteFilo = async (index: number) => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL_API}delete_filo`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ index }),
+      });
+  
+      const responseData = await response.json();
+
+      console.log("Respuesta del servidor:", responseData)
+  
+      if (!response.ok) {
+        throw new Error(responseData.message || "Error al eliminar el filo");
+      }
+  
+      return { success: true, message: "Filo eliminado exitosamente" };
+    } catch (error) {
+      if (error instanceof Error) {
+        return { success: false, message: `Error: ${error.message}` };
+      } else {
+        return { success: false, message: "Unknown error" };
+      }
+    }
+  };

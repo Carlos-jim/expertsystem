@@ -1,27 +1,23 @@
-import { ErrorToast } from "@/components/toast/error";
-export const sendResponseToApi = async (response: string, onSendMessage: (message: string) => void, setLoading: React.Dispatch<React.SetStateAction<boolean>>, setError: React.Dispatch<React.SetStateAction<string | null>>) => {
-  setLoading(true);
-  setError(null);
-  onSendMessage(response);
-
+export const sendResponsesToApi = async (responses: { input: number[] }) => {
+  console.log("Enviando respuestas a la API:", responses);
   try {
-    const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL_API}`;
-    console.log("API URL:", apiUrl);
-    const res = await fetch(apiUrl, {
-      method: "GET"
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL_API}answer`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(responses), // Envía el objeto directamente
     });
 
-    if (!res.ok) {
-      throw new Error("Failed to send response");
-    }
-    const data = await res.text();
-    console.log("Response Data:", data);
-  } catch (err) {
+    const responseData = await response.json();
+    console.log("Respuesta del servidor:", responseData);
 
-    ErrorToast();
-    setError("There was an error sending the request");
-    console.error(err);
-  } finally {
-    setLoading(false);
+    if (!response.ok) {
+      throw new Error(responseData.message || "Error al enviar las respuestas");
+    }
+
+    return responseData;
+  } catch (error) {
+    throw error;
   }
 };

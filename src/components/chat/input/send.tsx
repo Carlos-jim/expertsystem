@@ -1,20 +1,15 @@
-// components/SendMessage.tsx
-
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { useState } from "react";
-import { sendResponseToApi } from "@/app/home/chat/config/dataServices";
 
 interface SendMessageProps {
-  onSendMessage: (message: string) => void;
+  onSendMessage: (message: string) => void; // Función para notificar al padre
+  loading: boolean; // Estado de carga
+  error: string | null; // Estado de error
 }
 
-export default function SendMessage({ onSendMessage }: SendMessageProps) {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
+export default function SendMessage({ onSendMessage, loading, error }: SendMessageProps) {
   const handleResponse = (response: string) => {
-    sendResponseToApi(response, onSendMessage, setLoading, setError);
+    onSendMessage(response); // Notificar al padre con la respuesta del usuario
   };
 
   return (
@@ -28,7 +23,7 @@ export default function SendMessage({ onSendMessage }: SendMessageProps) {
           >
             <Button
               className="bg-[#8A4FFF] hover:bg-[#7B45E7] text-white px-4 py-2 rounded-full"
-              onClick={() => handleResponse("yes")}
+              onClick={() => handleResponse("Sí")} // Enviar "yes"
               disabled={loading}
             >
               {loading ? "Cargando..." : "Sí"}
@@ -42,7 +37,7 @@ export default function SendMessage({ onSendMessage }: SendMessageProps) {
           >
             <Button
               className="bg-[#FF4B4B] hover:bg-[#D83D3D] text-white px-4 py-2 rounded-full"
-              onClick={() => handleResponse("no")}
+              onClick={() => handleResponse("No")} // Enviar "no"
               disabled={loading}
             >
               {loading ? "Cargando..." : "No"}
@@ -50,7 +45,8 @@ export default function SendMessage({ onSendMessage }: SendMessageProps) {
           </motion.div>
         </div>
       </div>
-      
+
+      {/* Mostrar errores si existen */}
       {error && <div className="text-red-600 mt-4">{error}</div>}
     </div>
   );

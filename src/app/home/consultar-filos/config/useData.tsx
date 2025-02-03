@@ -21,6 +21,7 @@ export const useFetchFilos = () => {
         }
 
         const data = await response.json();
+        console.log(data);
         const phylumList = Object.values(data as { [key: string]: FiloItem }).map((item) => ({
           Phylum: item.Phylum,
           descripcion: item.descripcion,
