@@ -1,7 +1,7 @@
 export const sendFiloData = async <T>(formData: T) => {
   console.log("Enviando datos a la API:", formData);
     try {
-      const response = await fetch(`https://expert-systems.onrender.com/new_filo`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL_API}new_filo`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -13,7 +13,7 @@ export const useFetchFilos = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const apiUrl = `https://expert-systems.onrender.com/list_filos`;
+        const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL_API}list_filos`;
         const response = await fetch(apiUrl, { method: "GET" });
         
         if (!response.ok) {
