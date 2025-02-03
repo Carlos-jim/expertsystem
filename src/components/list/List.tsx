@@ -87,36 +87,38 @@ export default function ListaConFiltros() {
         <AnimatePresence>
           {currentItems.map((item, index) => (
             <motion.li
-              key={index}
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
-              className="bg-gray-100 p-2 rounded cursor-pointer flex justify-between items-center"
-              onClick={() => toggleDescription(item.Phylum)}
-            >
-              <div>
-                {item.Phylum}
-                {expandedItem === item.Phylum && (
-                  <motion.p
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="mt-2 text-gray-700"
-                  >
-                    {item.descripcion}
-                  </motion.p>
-                )}
-              </div>
+            key={index}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3, delay: index * 0.1 }}
+            className="bg-gray-100 p-2 rounded cursor-pointer flex justify-between items-center"
+            onClick={() => toggleDescription(item.Phylum)}
+          >
+            <div>
+              {item.Phylum}
+              {expandedItem === item.Phylum && (
+                <motion.p
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="mt-2 text-gray-700"
+                >
+                  {item.descripcion}
+                </motion.p>
+              )}
+            </div>
+            <div className="min-w-[30px] flex justify-end"> {/* Añadido min-w-[30px] */}
               <Trash2
                 className="text-red-500 hover:text-red-700 cursor-pointer"
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleDelete(index); // Pasar el índice del filo
+                  handleDelete(index);
                 }}
               />
-            </motion.li>
+            </div>
+          </motion.li>
           ))}
         </AnimatePresence>
       </motion.ul>
