@@ -51,6 +51,16 @@ export default function ChatInterface() {
     }
   }, [respuesta]);
 
+  // Efecto para desplazar el chat hacia abajo cuando se agregan nuevos mensajes
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTo({
+        top: containerRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  }, [messages]);
+
   const handleSendMessage = (newMessage: string) => {
     const respuestaNumerica = newMessage === "Sí" ? 1 : 0;
     setUserResponses((prevResponses) => [...prevResponses, respuestaNumerica]);
