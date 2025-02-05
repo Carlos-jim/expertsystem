@@ -1,5 +1,6 @@
 "use client"
 import { useState } from "react"
+import { useRouter } from "next/navigation" // Importar useRouter
 import { motion } from "framer-motion"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
@@ -12,6 +13,7 @@ import { ErrorToast } from "@/components/toast/error"
 import { sendFiloData } from "@/app/home/consultar-filos/agregar/config/dataServices"
 
 export default function FormularioCaracteristicas() {
+  const router = useRouter() // Inicializar useRouter
   const [formData, setFormData] = useState({
     filo: "",
     descripcion: "",
@@ -37,19 +39,20 @@ export default function FormularioCaracteristicas() {
     e.preventDefault()
     setLoading(true)
     setMessage("")
-  
+
     const result = await sendFiloData(formData)
     setMessage(result.message)
-    
+
     if (result.success) {
       SuccessToast();
       setFormData({ filo: "", descripcion: "", caracteristicas: Array(23).fill(0) })
     } else {
       ErrorToast();
     }
-    
+
     setLoading(false)
   }
+
   return (
     <motion.div className="pt-8" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
       <motion.div className="w-full max-w-4xl mx-auto" initial={{ scale: 0.95 }} animate={{ scale: 1 }} transition={{ duration: 0.4 }}>
@@ -82,8 +85,13 @@ export default function FormularioCaracteristicas() {
                   </Select>
                 </motion.div>
               ))}
-              <motion.div className="md:col-span-2 mt-4 flex justify-end" initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.4, delay: 0.7 }}>
-                <Button type="submit" disabled={loading}>{loading ? "Enviando..." : "Enviar"}</Button>
+              <motion.div className="md:col-span-2 mt-4 flex justify-end gap-2" initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.4, delay: 0.7 }}>
+                <Button type="button" variant="outline" onClick={() => router.back()}> {/* Botón para volver atrás */}
+                  Volver
+                </Button>
+                <Button type="submit" disabled={loading}>
+                  {loading ? "Enviando..." : "Enviar"}
+                </Button>
               </motion.div>
             </form>
           </CardContent>
