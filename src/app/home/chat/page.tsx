@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import SendMessage from "@/components/chat/input/send";
 import { preguntas } from "@/base_conocimiento/phylum_data";
 import { sendResponsesToApi } from "./config/dataServices";
+import { handleSendMessage } from "@/utils/handleSendMessage";
 
 interface Message {
   sender: 'BOT' | 'YO';
@@ -21,7 +22,7 @@ export default function ChatInterface() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [respuesta, setRespuesta] = useState<Respuesta | null>(null);
-  const [chatTerminado, setChatTerminado] = useState(false); // Estado para controlar si el chat ha terminado
+  const [chatTerminado, setChatTerminado] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Efecto para hacer la primera pregunta al cargar el componente
@@ -49,7 +50,7 @@ export default function ChatInterface() {
           text: `El Phylum es ${respuesta.Phylum}. Descripción: ${respuesta.descripcion}`,
         },
       ]);
-      setChatTerminado(true); // Marcar el chat como terminado
+      setChatTerminado(true);
     }
   }, [respuesta]);
 
@@ -62,17 +63,6 @@ export default function ChatInterface() {
       });
     }
   }, [messages]);
-
-  const handleSendMessage = (newMessage: string) => {
-    const respuestaNumerica = newMessage === "Sí" ? 1 : 0;
-    setUserResponses((prevResponses) => [...prevResponses, respuestaNumerica]);
-
-    setMessages((prevMessages) => [...prevMessages, { sender: "YO", text: newMessage }]);
-
-    if (currentQuestionIndex < preguntas.length - 1) {
-      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-    }
-  };
 
   const sendUserResponsesToApi = async () => {
     try {
@@ -93,7 +83,7 @@ export default function ChatInterface() {
     setCurrentQuestionIndex(0);
     setUserResponses([]);
     setRespuesta(null);
-    setChatTerminado(false); // Reiniciar el estado del chat
+    setChatTerminado(false);
   };
 
   return (
@@ -113,7 +103,16 @@ export default function ChatInterface() {
         ))}
         <div className="pt-4">
           <SendMessage
-            onSendMessage={handleSendMessage}
+            onSendMessage={(newMessage) =>
+              handleSendMessage(
+                newMessage,
+                currentQuestionIndex,
+                setUserResponses,
+                setMessages,
+                setCurrentQuestionIndex,
+                preguntas
+              )
+            }
             loading={loading}
             error={error}
             chatTerminado={chatTerminado}

@@ -1,12 +1,12 @@
 export const preguntas =[
   {
     "id": 1,
-    "pregunta": "¿Tiene tejidos?",
+    "pregunta": "¿Tiene órganos?",
     "respuesta": null
   },
   {
     "id": 2,
-    "pregunta": "¿Tiene órganos?",
+    "pregunta": "¿Tiene tejidos?",
     "respuesta": null
   },
   {
@@ -16,7 +16,7 @@ export const preguntas =[
   },
   {
     "id": 4,
-    "pregunta": "¿Tiene sistema radial?",
+    "pregunta": "¿Tiene simetria radial?",
     "respuesta": null
   },
   {
@@ -26,7 +26,7 @@ export const preguntas =[
   },
   {
     "id": 6,
-    "pregunta": "¿Tiene dos capas germinales?",
+    "pregunta": "¿Tiene 2 capas germinales?",
     "respuesta": null
   },
   {

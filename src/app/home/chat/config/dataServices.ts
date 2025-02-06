@@ -6,7 +6,7 @@ export const sendResponsesToApi = async (responses: { input: number[] }) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(responses), // Envía el objeto directamente
+      body: JSON.stringify(responses),
     });
 
     const responseData = await response.json();
