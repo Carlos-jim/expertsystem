@@ -64,7 +64,7 @@ export default function FormularioCaracteristicas() {
             {message && <div className={`p-2 rounded ${message.startsWith("Error") ? "bg-red-200" : "bg-green-200"}`}>{message}</div>}
             <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="md:col-span-2 space-y-2">
-                <Label htmlFor="filo">Nombre del Filo</Label>
+                <Label htmlFor="filo">Nombre del Phylum</Label>
                 <Input id="filo" name="filo" value={formData.filo} onChange={handleInputChange} placeholder="Ingrese el nombre del filo" />
               </div>
               <div className="md:col-span-2 space-y-2">

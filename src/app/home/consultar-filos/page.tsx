@@ -16,7 +16,7 @@ export default function ConsultarFilos() {
           transition={{ duration: 0.5 }}
           className="text-2xl font-bold mb-4"
         >
-          Lista de filos
+          Lista de Phylum
         </motion.h1>
         <motion.div
           initial={{ opacity: 0, y: -20 }}
