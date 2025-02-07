@@ -16,7 +16,7 @@ import { useFetchFilos } from "@/app/home/consultar-filos/config/useData";
 import { deleteFilo } from "@/app/home/consultar-filos/agregar/config/dataServices";
 
 export default function ListaConFiltros() {
-  const { items, loading, error } = useFetchFilos();
+  const { items, loading, error, refetch } = useFetchFilos(); // Añadir refetch
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -24,7 +24,11 @@ export default function ListaConFiltros() {
 
   const itemsPerPage = 5;
 
-  const filteredAndSortedItems = items
+  // Crear una lista con índices originales
+  const itemsWithIndex = items.map((item, index) => ({ ...item, originalIndex: index }));
+
+  // Filtrar y ordenar manteniendo los índices originales
+  const filteredAndSortedItems = itemsWithIndex
     .filter((item) =>
       item.Phylum.toLowerCase().includes(searchTerm.toLowerCase())
     )
@@ -33,6 +37,8 @@ export default function ListaConFiltros() {
         ? a.Phylum.localeCompare(b.Phylum)
         : b.Phylum.localeCompare(a.Phylum)
     );
+
+  console.log("Filtrados y ordenados:", filteredAndSortedItems);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -47,11 +53,12 @@ export default function ListaConFiltros() {
     setExpandedItem(expandedItem === phylum ? null : phylum);
   };
 
-  const handleDelete = async (index: number) => {
-    console.log("Deleting filo with index:", index);
-    const result = await deleteFilo(index);
+  const handleDelete = async (originalIndex: number) => {
+    console.log("Deleting filo with original index:", originalIndex);
+    const result = await deleteFilo(originalIndex);
     if (result.success) {
       console.log(result.message);
+      refetch(); // Recargar los datos después de eliminar
     } else {
       console.error(result.message);
     }
@@ -87,38 +94,38 @@ export default function ListaConFiltros() {
         <AnimatePresence>
           {currentItems.map((item, index) => (
             <motion.li
-            key={index}
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3, delay: index * 0.1 }}
-            className="bg-gray-100 p-2 rounded cursor-pointer flex justify-between items-center"
-            onClick={() => toggleDescription(item.Phylum)}
-          >
-            <div>
-              {item.Phylum}
-              {expandedItem === item.Phylum && (
-                <motion.p
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="mt-2 text-gray-700"
-                >
-                  {item.descripcion}
-                </motion.p>
-              )}
-            </div>
-            <div className="min-w-[30px] flex justify-end"> {/* Añadido min-w-[30px] */}
-              <Trash2
-                className="text-red-500 hover:text-red-700 cursor-pointer"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDelete(index);
-                }}
-              />
-            </div>
-          </motion.li>
+              key={item.originalIndex} // Usar el índice original como clave
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3, delay: index * 0.1 }}
+              className="bg-gray-100 p-2 rounded cursor-pointer flex justify-between items-center"
+              onClick={() => toggleDescription(item.Phylum)}
+            >
+              <div>
+                {item.Phylum}
+                {expandedItem === item.Phylum && (
+                  <motion.p
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="mt-2 text-gray-700"
+                  >
+                    {item.descripcion}
+                  </motion.p>
+                )}
+              </div>
+              <div className="min-w-[30px] flex justify-end">
+                <Trash2
+                  className="text-red-500 hover:text-red-700 cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDelete(item.originalIndex); // Usar el índice original para eliminar
+                  }}
+                />
+              </div>
+            </motion.li>
           ))}
         </AnimatePresence>
       </motion.ul>

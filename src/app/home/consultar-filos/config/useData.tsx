@@ -10,37 +10,42 @@ export const useFetchFilos = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL_API}list_filos`;
-        const response = await fetch(apiUrl, { method: "GET" });
-        
-        if (!response.ok) {
-          throw new Error("Error al obtener los datos");
-        }
+  const fetchData = async () => {
+    try {
+      const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL_API}list_filos`;
+      const response = await fetch(apiUrl, { method: "GET" });
 
-        const data = await response.json();
-        console.log(data);
-        const phylumList = Object.values(data as { [key: string]: FiloItem }).map((item) => ({
-          Phylum: item.Phylum,
-          descripcion: item.descripcion,
-        }));
-
-        setItems(phylumList);
-      } catch (error) {
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError("Error desconocido");
-        }
-      } finally {
-        setLoading(false);
+      if (!response.ok) {
+        throw new Error("Error al obtener los datos");
       }
-    };
 
+      const data = await response.json();
+      console.log(data);
+      const phylumList = Object.values(data as { [key: string]: FiloItem }).map((item) => ({
+        Phylum: item.Phylum,
+        descripcion: item.descripcion,
+      }));
+
+      setItems(phylumList);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("Error desconocido");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchData();
   }, []);
 
-  return { items, loading, error };
+  const refetch = () => {
+    setLoading(true);
+    fetchData();
+  };
+
+  return { items, loading, error, refetch };
 };
