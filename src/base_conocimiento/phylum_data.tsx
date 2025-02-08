@@ -6,22 +6,22 @@ export const preguntas =[
   },
   {
     "id": 2,
-    "pregunta": "¿Tiene tejidos?",
-    "respuesta": null
-  },
-  {
-    "id": 3,
     "pregunta": "¿Tiene sistema de órganos?",
     "respuesta": null
   },
   {
+    "id": 3,
+    "pregunta": "¿Tiene tejidos?",
+    "respuesta": null
+  },
+  {
     "id": 4,
-    "pregunta": "¿Tiene simetria radial?",
+    "pregunta": "¿Tiene sistema bilateral?",
     "respuesta": null
   },
   {
     "id": 5,
-    "pregunta": "¿Tiene sistema bilateral?",
+    "pregunta": "¿Tiene simetria radial?",
     "respuesta": null
   },
   {
@@ -41,32 +41,32 @@ export const preguntas =[
   },
   {
     "id": 9,
-    "pregunta": "¿Es seudocelomado?",
-    "respuesta": null
-  },
-  {
-    "id": 10,
     "pregunta": "¿Es celomado?",
     "respuesta": null
   },
   {
-    "id": 11,
-    "pregunta": "¿Tiene un sistema digestivo incompleto?",
+    "id": 10,
+    "pregunta": "¿Es seudocelomado?",
     "respuesta": null
   },
   {
-    "id": 12,
+    "id": 11,
     "pregunta": "¿Tiene un sistema digestivo completo?",
     "respuesta": null
   },
   {
+    "id": 12,
+    "pregunta": "¿Tiene un sistema digestivo incompleto?",
+    "respuesta": null
+  },
+  {
     "id": 13,
-    "pregunta": "¿Tiene sistema nervioso difuso?",
+    "pregunta": "¿Tiene sistema nervioso ganglionar?",
     "respuesta": null
   },
   {
     "id": 14,
-    "pregunta": "¿Tiene sistema nervioso ganglionar?",
+    "pregunta": "¿Tiene sistema nervioso difuso?",
     "respuesta": null
   },
   {
@@ -82,11 +82,6 @@ export const preguntas =[
   {
     "id": 17,
     "pregunta": "¿Tiene esqueleto externo?",
-    "respuesta": null
-  },
-  {
-    "id": 18,
-    "pregunta": "¿Tiene soporte hidrostático?",
     "respuesta": null
   },
   {
