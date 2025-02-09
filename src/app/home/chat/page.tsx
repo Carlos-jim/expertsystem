@@ -8,6 +8,7 @@ import { handleSendMessage } from "@/utils/handleSendMessage";
 interface Message {
   sender: 'BOT' | 'YO';
   text: string;
+  img?: string; // Propiedad opcional para la imagen
 }
 
 interface Respuesta {
@@ -25,23 +26,23 @@ export default function ChatInterface() {
   const [chatTerminado, setChatTerminado] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Efecto para hacer la primera pregunta al cargar el componente
   useEffect(() => {
     if (currentQuestionIndex < preguntas.length) {
       const pregunta = preguntas[currentQuestionIndex].pregunta;
-      setMessages((prevMessages) => [...prevMessages, { sender: "BOT", text: pregunta }]);
+      const img = preguntas[currentQuestionIndex].img;
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { sender: "BOT", text: pregunta, img },
+      ]);
     }
   }, [currentQuestionIndex]);
 
-  // Efecto para enviar respuestas cuando se completa el cuestionario
   useEffect(() => {
-    console.log("User responses:", userResponses);
     if (userResponses.length === preguntas.length + 1) {
       sendUserResponsesToApi();
     }
   }, [userResponses]);
 
-  // Efecto para mostrar la respuesta del servidor cuando esté disponible
   useEffect(() => {
     if (respuesta) {
       setMessages((prevMessages) => [
@@ -55,15 +56,18 @@ export default function ChatInterface() {
     }
   }, [respuesta]);
 
-  // Efecto para desplazar el chat hacia abajo cuando se agregan nuevos mensajes
   useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const scrollToBottom = () => {
     if (containerRef.current) {
       containerRef.current.scrollTo({
         top: containerRef.current.scrollHeight,
         behavior: "smooth",
       });
     }
-  }, [messages]);
+  };
 
   const sendUserResponsesToApi = async () => {
     try {
@@ -99,6 +103,16 @@ export default function ChatInterface() {
             >
               <div className="font-semibold text-sm mb-2">{message.sender}</div>
               <p className="text-sm">{message.text}</p>
+              {message.img && (
+                <div className="mt-2">
+                  <img
+                    src={message.img}
+                    alt="Imagen de la pregunta"
+                    className="rounded-lg w-full h-auto"
+                    onLoad={scrollToBottom} // Llamar scrollToBottom cuando la imagen cargue
+                  />
+                </div>
+              )}
             </div>
           </div>
         ))}

@@ -4,6 +4,7 @@ import { SetStateAction } from "react";
 interface Message {
   sender: 'BOT' | 'YO';
   text: string;
+  img?: string;
 }
 
 export const handleSendMessage = (
