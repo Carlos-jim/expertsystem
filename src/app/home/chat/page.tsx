@@ -35,7 +35,8 @@ export default function ChatInterface() {
 
   // Efecto para enviar respuestas cuando se completa el cuestionario
   useEffect(() => {
-    if (userResponses.length === preguntas.length) {
+    console.log("User responses:", userResponses);
+    if (userResponses.length === preguntas.length + 1) {
       sendUserResponsesToApi();
     }
   }, [userResponses]);
