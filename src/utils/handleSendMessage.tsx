@@ -1,8 +1,7 @@
-
 import { SetStateAction } from "react";
 
 interface Message {
-  sender: 'BOT' | 'YO';
+  sender: "BOT" | "YO";
   text: string;
   img?: string;
 }
@@ -18,8 +17,11 @@ export const handleSendMessage = (
   const respuestaNumerica = newMessage === "Sí" ? 1 : 0;
   setUserResponses((prevResponses) => [...prevResponses, respuestaNumerica]);
 
-  setMessages((prevMessages) => [...prevMessages, { sender: "YO", text: newMessage }]);
-
+  setMessages((prevMessages) => [
+    ...prevMessages,
+    { sender: "YO", text: newMessage },
+  ]);
+  //console.log("Enviando respuesta:", setUserResponses);
   // Condición para omitir la pregunta 1 si se responde a la pregunta 0
   if (currentQuestionIndex === 0 && respuestaNumerica === 0) {
     setUserResponses((prevResponses) => [...prevResponses, 0]); // Agregar un 0 para la pregunta 1
@@ -32,7 +34,7 @@ export const handleSendMessage = (
     return;
   }
   if (currentQuestionIndex === 1 && respuestaNumerica === 0) {
-    setUserResponses((prevResponses) => [1, ...prevResponses,]); // Agregar un 0 para la pregunta 3
+    setUserResponses((prevResponses) => [1, ...prevResponses]); // Agregar un 0 para la pregunta 3
     setCurrentQuestionIndex((prevIndex) => prevIndex + 2); // Saltar la pregunta 3
     return;
   }
@@ -44,7 +46,7 @@ export const handleSendMessage = (
       return updatedResponses;
     });
     setCurrentQuestionIndex((prevIndex) => prevIndex + 0); // Avanzamos dos preguntas
-  }  
+  }
   if (currentQuestionIndex === 3 && respuestaNumerica === 1) {
     setUserResponses((prevResponses) => [
       ...prevResponses.slice(0, 3), // Mantén las respuestas previas hasta la posición 4 (no incluidas)
@@ -88,7 +90,7 @@ export const handleSendMessage = (
       ...prevResponses.slice(10), // Mantenemos las respuestas posteriores a la 위치 4
     ]);
     setCurrentQuestionIndex((prevIndex) => prevIndex + 2); // Avanzamos dos preguntas
-    return
+    return;
   }
   if (currentQuestionIndex === 11 && respuestaNumerica === 1) {
     setUserResponses((prevResponses) => {
@@ -99,25 +101,12 @@ export const handleSendMessage = (
     });
     setCurrentQuestionIndex((prevIndex) => prevIndex + 0); // Avanzamos dos preguntas
   }
-  
-  
-  
-  
-
-
-
-
-
-
-
-
 
   if (currentQuestionIndex === 8 && respuestaNumerica === 1) {
     setUserResponses((prevResponses) => [...prevResponses, 0]); // Agregar un 0 para la pregunta 3
     setCurrentQuestionIndex((prevIndex) => prevIndex + 2); // Saltar la pregunta 3
     return;
   }
-
 
   // Condición para omitir la pregunta 12 si se responde "Sí" a la pregunta 11
   if (currentQuestionIndex === 10 && respuestaNumerica === 1) {
@@ -133,7 +122,7 @@ export const handleSendMessage = (
     return;
   }
   if (currentQuestionIndex === 12 && respuestaNumerica === 1) {
-    setUserResponses((prevResponses) => [...prevResponses, 0,0]); // Agregar un 0 para la pregunta 7
+    setUserResponses((prevResponses) => [...prevResponses, 0, 0]); // Agregar un 0 para la pregunta 7
     setCurrentQuestionIndex((prevIndex) => prevIndex + 3); // Saltar la pregunta 7
     return;
   }
@@ -146,18 +135,23 @@ export const handleSendMessage = (
   }
 
   if (currentQuestionIndex === 14 && respuestaNumerica === 1) {
-    setUserResponses((prevResponses) => [...prevResponses]); 
-    setCurrentQuestionIndex((prevIndex) => prevIndex + 0); 
+    setUserResponses((prevResponses) => [...prevResponses]);
+    setCurrentQuestionIndex((prevIndex) => prevIndex + 0);
   }
 
   if (currentQuestionIndex === 15 && respuestaNumerica === 1) {
-    setUserResponses((prevResponses) => [...prevResponses, 0 ,0]); 
-    setCurrentQuestionIndex((prevIndex) => prevIndex + 1); 
+    setUserResponses((prevResponses) => [...prevResponses, 0, 0]);
+    setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
   }
 
   if (currentQuestionIndex === 16 && respuestaNumerica === 1) {
-    setUserResponses((prevResponses) => [...prevResponses, 0 ]); 
-    setCurrentQuestionIndex((prevIndex) => prevIndex + 0); 
+    setUserResponses((prevResponses) => [...prevResponses, 0]);
+    setCurrentQuestionIndex((prevIndex) => prevIndex + 0);
+  }
+
+  if (currentQuestionIndex === 16 && respuestaNumerica === 0) {
+    setUserResponses((prevResponses) => [...prevResponses, 1]);
+    setCurrentQuestionIndex((prevIndex) => prevIndex + 0);
   }
 
   // Avanzar a la siguiente pregunta en caso contrario

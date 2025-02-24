@@ -37,6 +37,8 @@ export default function ChatInterface() {
     }
   }, [currentQuestionIndex]);
 
+  console.log("User responses:", userResponses);
+
   useEffect(() => {
     if (userResponses.length === preguntas.length + 1) {
       sendUserResponsesToApi();

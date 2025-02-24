@@ -13,6 +13,9 @@ export default function Navbar() {
           <Link href={"/home/chat"}>
             <p className="text-white hover:text-white/90">Chat</p>
           </Link>
+          <Link href={"/home/nosotros"}>
+            <p className="text-white hover:text-white/90">Nosotros</p>
+          </Link>
         </nav>
       </header>
     </div>

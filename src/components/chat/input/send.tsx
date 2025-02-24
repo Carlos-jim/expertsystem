@@ -18,7 +18,8 @@ export default function SendMessage({
   reiniciarChat,
 }: SendMessageProps) {
   const handleResponse = (response: string) => {
-    onSendMessage(response); // Notificar al padre con la respuesta del usuario
+    console.log("Enviando respuesta:", response);
+    onSendMessage(response); 
   };
 
   return (
@@ -80,7 +81,6 @@ export default function SendMessage({
         </AnimatePresence>
       </div>
 
-      {/* Mostrar errores si existen */}
       {error && <div className="text-red-600 mt-4">{error}</div>}
     </div>
   );

@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { SuccessToast } from "@/components/toast/success"
 import { ErrorToast } from "@/components/toast/error"
+import ImageUpload from "@/components/ui/imageUpload"
 import { sendFiloData } from "@/app/home/consultar-filos/agregar/config/dataServices"
 
 export default function FormularioCaracteristicas() {
@@ -65,7 +66,7 @@ export default function FormularioCaracteristicas() {
             <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="md:col-span-2 space-y-2">
                 <Label htmlFor="filo">Nombre del Phylum</Label>
-                <Input id="filo" name="filo" value={formData.filo} onChange={handleInputChange} placeholder="Ingrese el nombre del filo" />
+                <Input id="filo" name="filo" value={formData.filo} onChange={handleInputChange} placeholder="Ingrese el nombre del phylum" />
               </div>
               <div className="md:col-span-2 space-y-2">
                 <Label htmlFor="descripcion">Descripción</Label>
@@ -85,7 +86,10 @@ export default function FormularioCaracteristicas() {
                   </Select>
                 </motion.div>
               ))}
-              <motion.div className="md:col-span-2 mt-4 flex justify-end gap-2" initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.4, delay: 0.7 }}>
+              <motion.div className="md:col-span-2 mt-6" initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.4, delay: 0.5 }}>
+                <ImageUpload />
+              </motion.div>
+              <motion.div className="md:col-span-2 mt-2 flex justify-end gap-2" initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.4, delay: 0.7 }}>
                 <Button type="button" variant="outline" onClick={() => router.back()}> {/* Botón para volver atrás */}
                   Volver
                 </Button>

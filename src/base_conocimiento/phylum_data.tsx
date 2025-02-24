@@ -57,7 +57,7 @@ export const preguntas =[
     "id": 10,
     "pregunta": "¿Es pseudocelomado?",
     "respuesta": null,
-    "img": "/img/pseudocelomado.jpeg"
+    "img": "/img/pseudocelomado.jpg"
   },
   {
     "id": 11,
